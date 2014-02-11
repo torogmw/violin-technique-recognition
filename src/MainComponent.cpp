@@ -38,30 +38,30 @@ MainComponent::MainComponent ()
     techGroupComponent->setTextLabelPosition (Justification::centred);
 
     //addAndMakeVisible (videoTrigger = new QuickTimeMovieComponent());
-    addAndMakeVisible(animation = new ThreadingDemo());
+    //addAndMakeVisible(animation = new ThreadingDemo());
 
     
-    addAndMakeVisible (pitchDisplay = new Label (""));
-    pitchDisplay->setEditable (false, false, false);
-    pitchDisplay->setColour (Label::backgroundColourId, Colours::black);
+//    addAndMakeVisible (pitchDisplay = new Label (""));
+//    pitchDisplay->setEditable (false, false, false);
+//    pitchDisplay->setColour (Label::backgroundColourId, Colours::chocolate);
     
     addAndMakeVisible (pitchInfo = new Label ("pitch",
                                               "pitch\n"));
     pitchInfo->setFont (Font (26.20f, Font::plain));
     pitchInfo->setJustificationType (Justification::centred);
     pitchInfo->setEditable (false, false, false);
-    pitchInfo->setColour (Label::backgroundColourId, Colours::grey);
+    pitchInfo->setColour (Label::backgroundColourId, Colour (0xfff8ebeb));
     pitchInfo->setColour (TextEditor::textColourId, Colours::black);
     pitchInfo->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
     pitchInfo->setColour (TextEditor::highlightColourId, Colour (0x40080808));
 
-    addAndMakeVisible (liveDisplay = new LiveAudioInputDisplayComp(deviceManager));
+    //addAndMakeVisible (liveDisplay = new LiveAudioInputDisplayComp(deviceManager));
     addAndMakeVisible (techInfo = new Label ("tech",
                                              "Technique\n"));
     techInfo->setFont (Font (24.20f, Font::plain));
     techInfo->setJustificationType (Justification::centred);
     techInfo->setEditable (false, false, false);
-    techInfo->setColour (Label::backgroundColourId, Colours::grey);
+    techInfo->setColour (Label::backgroundColourId, Colour (0xfff8ebeb));
     techInfo->setColour (TextEditor::textColourId, Colours::black);
     techInfo->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -70,7 +70,7 @@ MainComponent::MainComponent ()
     modeInfo->setFont (Font (26.20f, Font::plain));
     modeInfo->setJustificationType (Justification::centred);
     modeInfo->setEditable (false, false, false);
-    modeInfo->setColour (Label::backgroundColourId, Colours::grey);
+    modeInfo->setColour (Label::backgroundColourId, Colour (0xfff8ebeb));
     modeInfo->setColour (TextEditor::textColourId, Colours::black);
     modeInfo->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
     modeInfo->setColour (TextEditor::highlightColourId, Colour (0x40080808));
@@ -117,23 +117,29 @@ MainComponent::MainComponent ()
 
     addAndMakeVisible (legatoToggle = new ToggleButton ("legato"));
     legatoToggle->addListener (this);
-
+    legatoToggle->setColour(TextButton::buttonColourId, Colours::chocolate);
     addAndMakeVisible (pizzToggle = new ToggleButton ("pizz"));
+    
     pizzToggle->setButtonText ("pizzicato");
     pizzToggle->addListener (this);
-
+    pizzToggle->setColour(TextButton::buttonColourId, Colours::chocolate);
+    
     addAndMakeVisible (stacToggle = new ToggleButton ("staccato"));
     stacToggle->addListener (this);
-
+    stacToggle->setColour(TextButton::buttonColourId, Colours::chocolate);
+    
     addAndMakeVisible (trillToggle = new ToggleButton ("trill"));
     trillToggle->addListener (this);
-
+    trillToggle->setColour(TextButton::buttonColourId, Colours::chocolate);
+    
     addAndMakeVisible (vibratoToggle = new ToggleButton ("vibrato"));
     vibratoToggle->addListener (this);
-
+    vibratoToggle->setColour(TextButton::buttonColourId, Colours::chocolate);
+    
     addAndMakeVisible (tremoToggle = new ToggleButton ("tremolo"));
     tremoToggle->addListener (this);
-
+    tremoToggle->setColour(TextButton::buttonColourId, Colours::chocolate);
+    
     addAndMakeVisible (playButton = new TextButton ("play"));
     playButton->setButtonText ("load");
     playButton->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnBottom);
@@ -160,17 +166,28 @@ MainComponent::MainComponent ()
     offlineStatusLabel->setColour (TextEditor::textColourId, Colours::black);
     offlineStatusLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (midislider = new Slider ("new slider"));
-    midislider->setRange (55, 90, 1);
-    midislider->setSliderStyle (Slider::LinearHorizontal);
-    midislider->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
-    midislider->addListener (this);
+//    addAndMakeVisible (midislider = new Slider ("new slider"));
+//    midislider->setRange (55, 90, 1);
+//    midislider->setSliderStyle (Slider::LinearHorizontal);
+//    midislider->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
+//    midislider->addListener (this);
 
     
     addAndMakeVisible(selectAudioIPCombo = new ComboBox ("Select Audio Input Device"));
     selectAudioIPCombo->setEditableText(true);
     selectAudioIPCombo->addListener(this);
     selectAudioIPCombo->setJustificationType(Justification::centred);
+    selectAudioIPCombo->setColour(ComboBox::buttonColourId, Colours::chocolate);
+    
+    // init the pitch contour labels here
+    for (int i = 0; i <330; i++){
+        pitchContour.add(new Label(""));
+        addAndMakeVisible(pitchContour.getLast());
+        pitchContour.getLast()->setEditable(false,false,false);
+        pitchContour.getLast()->setColour (Label::backgroundColourId, Colours::chocolate);
+        pitchContour.getLast()->setBounds(i*2+30, 680, 2, 0);
+    }
+        
     
     
     cachedImage_violin_png = ImageCache::getFromMemory (violin_png, violin_pngSize);
@@ -200,7 +217,7 @@ MainComponent::MainComponent ()
 
     deviceManager.setDefaultMidiOutput("from violinTrigger");
     recorder = new AudioRecorder(deviceManager);
-    startTimer(20);
+    startTimer(40);
     channel = 0;
     note = 0;
     timerCount = 0;
@@ -214,10 +231,10 @@ MainComponent::~MainComponent()
 
     longerDetectionComponent = nullptr;
     techGroupComponent = nullptr;
-    animation = nullptr;
+    //animation = nullptr;
     pitchInfo = nullptr;
-    pitchDisplay = nullptr;
-    liveDisplay = nullptr;
+    //pitchDisplay = nullptr;
+    //liveDisplay = nullptr;
     techInfo = nullptr;
     modeInfo = nullptr;
     thresSlider = nullptr;
@@ -235,9 +252,10 @@ MainComponent::~MainComponent()
     resultButton = nullptr;
     recordButton = nullptr;
     offlineStatusLabel = nullptr;
-    midislider = nullptr;
+    //midislider = nullptr;
     selectAudioIPCombo = nullptr;
-
+    
+    pitchContour.removeRange(0, pitchContour.size());
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -299,10 +317,10 @@ void MainComponent::resized()
     longerDetectionComponent->setBounds (712, 136, 288, 272);
     techGroupComponent->setBounds (208, 136, 472, 272);
     selectAudioIPCombo->setBounds (getWidth()/4+120, getHeight()/4-120, 200, 24);
-    animation->setBounds (0, 464, 616, 304);
-    pitchDisplay->setBounds(640, 542, 196, 10);
-    pitchInfo->setBounds (836, 488, 100, 64);
-    liveDisplay->setBounds (8, 408, 1032, 56);
+    //animation->setBounds (0, 464, 616, 304);
+    //pitchDisplay->setBounds(900, 542, 40, 10);
+    pitchInfo->setBounds (640, 488, 296, 64);
+    //liveDisplay->setBounds (8, 408, 1032, 56);
     techInfo->setBounds (640, 557, 296, 64);
     modeInfo->setBounds (640, 626, 296, 64);
     thresSlider->setBounds (48, 96, 97, 104);
@@ -320,7 +338,7 @@ void MainComponent::resized()
     resultButton->setBounds (768, 312, 192, 48);
     recordButton->setBounds (769, 264, 96, 48);
     offlineStatusLabel->setBounds (728, 168, 256, 80);
-    midislider->setBounds (648, 704, 280, 48);
+    //midislider->setBounds (648, 704, 280, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -333,22 +351,22 @@ void MainComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == thresSlider)
     {
         //[UserSliderCode_thresSlider] -- add your slider handling code here..
-        if (thresSlider->getValue() < 0.5)
-            animation->addABall();
-        else
-            animation->removeABall();
+//        if (thresSlider->getValue() < 0.5)
+//            animation->addABall();
+//        else
+//            animation->removeABall();
         if (audioInputSource)
             audioInputSource->vc->threshold = thresSlider->getValue();
         
         //[/UserSliderCode_thresSlider]
     }
-    else if (sliderThatWasMoved == midislider)
-    {
-        //[UserSliderCode_midislider] -- add your slider handling code here..
-        midiOut->sendMidiOut(2, midislider->getValue(), 127);
-        //[/UserSliderCode_midislider]
-    }
-
+//    else if (sliderThatWasMoved == midislider)
+//    {
+//        //[UserSliderCode_midislider] -- add your slider handling code here..
+//        midiOut->sendMidiOut(2, midislider->getValue(), 127);
+//        //[/UserSliderCode_midislider]
+//    }
+//
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
 }
@@ -363,8 +381,22 @@ void MainComponent::timerCallback()
         selectAudioIPCombo->addItem (devs[i], i + 1);
     
     if (audioInputSource){
-        int height = (int)(64*1.0/60*(audioInputSource->vc->pitch-36));
-        pitchDisplay->setBounds(640, 552-height, 196, height);
+        int height = (int)(200*1.0/60*(audioInputSource->vc->pitch-36));
+        //pitchDisplay->setBounds(900, 542-height, 40, height);
+        // move forward the label and attach the final pitch
+        for(int i = 0; i<330; i++)
+        {
+            if (i!=329){
+                // move forward
+                int temp = pitchContour[i+1]->getHeight();
+                pitchContour[i]->setBounds(i*2+30, 700-temp, 2, temp);
+            }
+            else{
+                pitchContour[i]->setBounds(i*2+30, 700-height, 2, height);
+            }
+            
+        }
+        
         pitchInfo->setText((String)audioInputSource->vc->pitch, NotificationType::sendNotification);
         techInfo->setText(audioInputSource->vc->classLabel, NotificationType::sendNotification);
         string templabel = audioInputSource->vc->classLabel;
@@ -384,7 +416,7 @@ void MainComponent::timerCallback()
             {
                 midiOut->sendMidiOut(channel, note, 127);
                 std::cout<<"send midi in channel "<<channel<<" note "<<note<<endl;
-                animation->addABall(note, channel);
+                //animation->addABall(note, channel);
                 timerCount = 0;
             }
         }

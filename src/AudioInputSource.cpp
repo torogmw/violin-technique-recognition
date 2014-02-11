@@ -111,13 +111,13 @@ void AudioInputSource::audioDeviceIOCallback(const float **inputChannelData, int
 
 void AudioInputSource::violinTracking(float* data)
 {
-    float* d = new float[RECORDSIZE];
-    for( int i=0; i<RECORDSIZE; i++)
-        d[i] = data[i];
+//    float* d = new float[RECORDSIZE];
+//    for( int i=0; i<RECORDSIZE; i++)
+//        d[i] = data[i];
     
-    vc->getReady(d);
+    vc->getReady(data);
     
-    delete d;
+    //delete d;
 }
 
 void AudioInputSource::audioDeviceAboutToStart(AudioIODevice* device)

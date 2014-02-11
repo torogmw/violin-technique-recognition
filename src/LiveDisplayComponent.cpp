@@ -27,7 +27,7 @@ void LiveAudioInputDisplayComp::paint (Graphics& g)
 {
     g.fillAll (Colour (0xfff8ebeb));
     
-    g.setColour (Colours::darkgrey);
+    g.setColour (Colours::chocolate);
     const float midY = getHeight() * 0.5f;
     int sampleNum = (nextSample + numElementsInArray (samples) - 1);
     

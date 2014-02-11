@@ -85,7 +85,7 @@ private:
     //==============================================================================
     ScopedPointer<GroupComponent> longerDetectionComponent;
     ScopedPointer<GroupComponent> techGroupComponent;
-    ScopedPointer<ThreadingDemo> animation;
+    //ScopedPointer<ThreadingDemo> animation;
     ScopedPointer<Label> pitchInfo;
     ScopedPointer<Label> pitchDisplay;
     ScopedPointer<LiveAudioInputDisplayComp> liveDisplay;
@@ -106,9 +106,9 @@ private:
     ScopedPointer<TextButton> resultButton;
     ScopedPointer<TextButton> recordButton;
     ScopedPointer<Label> offlineStatusLabel;
-    ScopedPointer<Slider> midislider;
+    //ScopedPointer<Slider> midislider;
     ScopedPointer<ComboBox> selectAudioIPCombo;
-    
+    OwnedArray<Label> pitchContour;
     
     Image cachedImage_violin_png;
     Image cachedImage_legato_png;
