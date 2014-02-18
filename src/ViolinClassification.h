@@ -61,7 +61,7 @@ public:
     void smooth(vector<int> &c);
     
     ChromaFeat *cf;
-    string classLabel = " ";
+    string classLabel = "^_^";
     vector<int> toggleState;
     float threshold = 0.005;
     int pitch = 0;
@@ -72,9 +72,9 @@ protected:
     const int env_blockSize = 512;
     const int env_hopSize = 100;
     
-    const float bias1 = 1.6914;
-    const float bias2 = 0.0029;
-    const float bias3 = -0.8262;
+    const float bias1 = 0.4105;
+    const float bias2 = -0.9107;
+    const float bias3 = -0.7790;
     int numblocks;
     int numdownSamples;
     float* resampleddata;
