@@ -61,7 +61,7 @@ public:
     void smooth(vector<int> &c);
     
     ChromaFeat *cf;
-    string classLabel = "^_^";
+    string classLabel = "";
     vector<int> toggleState;
     float threshold = 0.005;
     int pitch = 0;
