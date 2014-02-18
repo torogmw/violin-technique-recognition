@@ -37,6 +37,7 @@ public:
     void getFeatures();
     void timeDomainFeat();
     void envelope();
+    void zcr();
     void chroma();
     void chromaPeakPair(float *data, vector<int> &v);
     float getSum(vector<float> &v);
@@ -61,7 +62,7 @@ public:
     void smooth(vector<int> &c);
     
     ChromaFeat *cf;
-    string classLabel = "";
+    string classLabel = "^_^";
     vector<int> toggleState;
     float threshold = 0.005;
     int pitch = 0;
@@ -99,7 +100,7 @@ protected:
     vector<float> featurelist;                                      // 1. std
                                                                     // 2. skewness
                                                                     // 3. kurtosis
-                                                                    // 4. envelope mean
+                                                                    // 4. zcr mean
                                                                     // 5. envelope std
                                                                     // 6. special feature
 
