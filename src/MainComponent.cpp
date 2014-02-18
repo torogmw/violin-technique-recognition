@@ -402,7 +402,7 @@ void MainComponent::timerCallback()
         string templabel = audioInputSource->vc->classLabel;
         int tempChannel = 0;
         int tempNote = audioInputSource->vc->pitch;
-        if (templabel == "^_^")  tempChannel = 0;
+        if (templabel == " ")  tempChannel = 0;
         else if (templabel == "pizzicato") tempChannel = 1;
         else if (templabel == "staccato") tempChannel = 2;
         else if (templabel == "trill") tempChannel = 3;

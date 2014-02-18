@@ -113,7 +113,7 @@ void ViolinClassification::getReady(float* gWavDataIn)
         doClassify();
     }
     else
-        classLabel = "^_^";    
+        classLabel = " ";    
 }
 
 
@@ -371,13 +371,13 @@ void ViolinClassification::svmClassifyAll()
             if (contain(toggleState, 0))
                 classLabel = "pizzicato";
             else
-                classLabel = "^_^";
+                classLabel = " ";
         }
         else{
             if (contain(toggleState, 1))
                 classLabel = "staccato";
             else
-                classLabel = "^_^";
+                classLabel = " ";
         }
     }
     else{
@@ -389,7 +389,7 @@ void ViolinClassification::svmClassifyAll()
             if (contain(toggleState, 2))
                 classLabel = "tremolo";
             else
-                classLabel = "^_^";
+                classLabel = " ";
         }
         else{
             int level3res = chromaCompare();
@@ -397,13 +397,13 @@ void ViolinClassification::svmClassifyAll()
                 if (contain(toggleState, 3))
                     classLabel = "trill";
                 else
-                    classLabel = "^_^";
+                    classLabel = " ";
             }
             else{
                 if (contain(toggleState, 4))
                     classLabel = "vibrato";
                 else
-                    classLabel = "^_^";
+                    classLabel = " ";
             }
         }
     }
@@ -429,10 +429,10 @@ void ViolinClassification::svmClassifyPizz()
         if (level2res == 1)
             classLabel = "pizzicato";
         else
-            classLabel = "^_^";
+            classLabel = " ";
     }
     else
-        classLabel = "^_^";
+        classLabel = " ";
 }
 
 
@@ -447,10 +447,10 @@ void ViolinClassification::svmClassifyStaccato()
         if (level2res == 2)
             classLabel = "staccato";
         else
-            classLabel = "^_^";
+            classLabel = " ";
     }
     else
-        classLabel = "^_^";
+        classLabel = " ";
 }
 
 
@@ -468,10 +468,10 @@ void ViolinClassification::svmClassifyTremolo()
         if (level2res == 1)
             classLabel = "tremolo";
         else
-            classLabel = "^_^";
+            classLabel = " ";
     }
     else
-        classLabel = "^_^";
+        classLabel = " ";
 }
 
 
@@ -481,7 +481,7 @@ void ViolinClassification::svmClassifyTrill()
     if (level3res == 1)
         classLabel = "trill";
     else
-        classLabel = "^_^";
+        classLabel = " ";
 }
 
 
@@ -491,7 +491,7 @@ void ViolinClassification::svmClassifyVibrato()
     if (level3res == 2)
         classLabel = "vibrato";
     else
-        classLabel = "^_^";
+        classLabel = " ";
 }
 
 
