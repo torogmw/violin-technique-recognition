@@ -18,33 +18,33 @@ ViolinClassification::ViolinClassification()
     memset(chromahist, 0, NUMCHROMAGRAM*sizeof(float));
     
     shift1.push_back(0.1834);
-    shift1.push_back(-14.6071);
+    shift1.push_back(-14.6071);4
     shift1.push_back(-0.0476);
     scalefactor1.push_back(0.6410);
     scalefactor1.push_back(0.0427);
     scalefactor1.push_back(24.7333);
     
-    shift2.push_back(-0.1860);
-    shift2.push_back(0.1834);
-    shift2.push_back(-14.6071);
-    shift2.push_back(-0.0476);
-    shift2.push_back(-0.1727);
-    scalefactor2.push_back(12.6624);
-    scalefactor2.push_back(0.6410);
-    scalefactor2.push_back(0.0427);
-    scalefactor2.push_back(24.7333);
-    scalefactor2.push_back(19.7102);
+    shift2.push_back(-0.1075);
+    shift2.push_back(0.4577);
+    shift2.push_back(-30.8053);
+    shift2.push_back(-0.0122);
+    shift2.push_back(-0.1717);
+    scalefactor2.push_back(30.0867);
+    scalefactor2.push_back(0.4215);
+    scalefactor2.push_back(0.0327);
+    scalefactor2.push_back(97.2139);
+    scalefactor2.push_back(18.3121);
     
-    shift3.push_back(-0.1860);
-    shift3.push_back(-0.1834);
-    shift3.push_back(-14.6071);
-    shift3.push_back(-0.0476);
-    shift3.push_back(-283.4652);
-    scalefactor3.push_back(12.6624);
-    scalefactor3.push_back(0.6410);
-    scalefactor3.push_back(0.0427);
-    scalefactor3.push_back(24.7333);
-    scalefactor3.push_back(0.0053);
+    shift3.push_back(-0.2383);
+    shift3.push_back(0.0005667);
+    shift3.push_back(-3.8083);
+    shift3.push_back(-0.0712);
+    shift3.push_back(-182.3652);
+    scalefactor3.push_back(18.8786);
+    scalefactor3.push_back(2.1038);
+    scalefactor3.push_back(0.7671);
+    scalefactor3.push_back(28.1610);
+    scalefactor3.push_back(0.0055);
     
     
     ifstream infile;
@@ -134,7 +134,7 @@ void ViolinClassification::getReady(float* gWavDataIn)
         doClassify();
     }
     else
-        classLabel = "^_^";    
+        classLabel = "";    
 }
 
 
@@ -273,8 +273,22 @@ void ViolinClassification::envelope()
 
 void ViolinClassification::zcr()
 {
-    // calculate zcr std here ...
-    featurelist.push_back(zcr_std);
+    // calculate zcr mean here ...
+    float zcr_mean = 0;
+    zcrbuffer.clear();
+    for (int i = 0; i<inputData.size()-blockSize;i++)
+    {
+        int temp = 0;                     // temp zcr count
+        for (int j = 1; j<blockSize; j++)
+        {
+            if(inputData[i+j-1]*inputData[i+j]<0)
+                temp++;
+        }
+        //cout<<temp<<endl;
+        zcrbuffer.push_back((float)temp/blockSize);
+    }
+    zcr_mean = getSum(zcrbuffer)/zcrbuffer.size();
+    featurelist.push_back(zcr_mean);
 }
 
 
@@ -396,31 +410,39 @@ void ViolinClassification::svmClassifyAll()
     int level1res = svmfun(sv1, alpha1, shift1, scalefactor1, bias1, featToCompare);
     int level2res;
     if (level1res == 1){
+        featToCompare.clear();
         featToCompare.push_back(featurelist[0]);
+        featToCompare.push_back(featurelist[1]);
+        featToCompare.push_back(featurelist[2]);
+        featToCompare.push_back(featurelist[3]);
         featToCompare.push_back(featurelist[4]);
         level2res = svmfun(sv2, alpha2, shift2, scalefactor2, bias2, featToCompare);
         if (level2res == 1){
             if (contain(toggleState, 0))
                 classLabel = "pizzicato";
             else
-                classLabel = "^_^";
+                classLabel = "";
         }
         else{
             if (contain(toggleState, 1))
                 classLabel = "staccato";
             else
-                classLabel = "^_^";
+                classLabel = "";
         }
     }
     else{
+        featToCompare.clear();
         featToCompare.push_back(featurelist[0]);
+        featToCompare.push_back(featurelist[1]);
+        featToCompare.push_back(featurelist[2]);
+        featToCompare.push_back(featurelist[3]);
         featToCompare.push_back(featurelist[5]);
         level2res = svmfun(sv3, alpha3, shift3, scalefactor3, bias3, featToCompare);
         if (level2res == 1){
             if (contain(toggleState, 2))
                 classLabel = "tremolo";
             else
-                classLabel = "^_^";
+                classLabel = "";
         }
         else{
             int level3res = chromaCompare();
@@ -428,13 +450,13 @@ void ViolinClassification::svmClassifyAll()
                 if (contain(toggleState, 3))
                     classLabel = "trill";
                 else
-                    classLabel = "^_^";
+                    classLabel = "";
             }
             else{
                 if (contain(toggleState, 4))
                     classLabel = "vibrato";
                 else
-                    classLabel = "^_^";
+                    classLabel = "";
             }
         }
     }
@@ -457,16 +479,20 @@ void ViolinClassification::svmClassifyPizz()
     featToCompare.push_back(featurelist[3]);
     int level1res = svmfun(sv1, alpha1, shift1, scalefactor1, bias1, featToCompare);
     if (level1res == 1){
+        featToCompare.clear();
         featToCompare.push_back(featurelist[0]);
+        featToCompare.push_back(featurelist[1]);
+        featToCompare.push_back(featurelist[2]);
+        featToCompare.push_back(featurelist[3]);
         featToCompare.push_back(featurelist[4]);
         int level2res = svmfun(sv2, alpha2, shift2, scalefactor2, bias2, featToCompare);
         if (level2res == 1)
             classLabel = "pizzicato";
         else
-            classLabel = "^_^";
+            classLabel = "";
     }
     else
-        classLabel = "^_^";
+        classLabel = "";
 }
 
 
@@ -478,16 +504,20 @@ void ViolinClassification::svmClassifyStaccato()
     featToCompare.push_back(featurelist[3]);
     int level1res = svmfun(sv1, alpha1, shift1, scalefactor1, bias1, featToCompare);
     if (level1res == 1){
+        featToCompare.clear();
         featToCompare.push_back(featurelist[0]);
+        featToCompare.push_back(featurelist[1]);
+        featToCompare.push_back(featurelist[2]);
+        featToCompare.push_back(featurelist[3]);
         featToCompare.push_back(featurelist[4]);
         int level2res = svmfun(sv2, alpha2, shift2, scalefactor2, bias2, featToCompare);
         if (level2res == 2)
             classLabel = "staccato";
         else
-            classLabel = "^_^";
+            classLabel = "";
     }
     else
-        classLabel = "^_^";
+        classLabel = "";
 }
 
 
@@ -501,15 +531,18 @@ void ViolinClassification::svmClassifyTremolo()
     if (level1res == 2){
         featToCompare.clear();
         featToCompare.push_back(featurelist[0]);
+        featToCompare.push_back(featurelist[1]);
+        featToCompare.push_back(featurelist[2]);
+        featToCompare.push_back(featurelist[3]);
         featToCompare.push_back(featurelist[5]);
         int level2res = svmfun(sv3, alpha3, shift3, scalefactor3, bias3, featToCompare);
         if (level2res == 1)
             classLabel = "tremolo";
         else
-            classLabel = "^_^";
+            classLabel = "";
     }
     else
-        classLabel = "^_^";
+        classLabel = "";
 }
 
 
@@ -519,7 +552,7 @@ void ViolinClassification::svmClassifyTrill()
     if (level3res == 1)
         classLabel = "trill";
     else
-        classLabel = "^_^";
+        classLabel = "";
 }
 
 
@@ -529,7 +562,7 @@ void ViolinClassification::svmClassifyVibrato()
     if (level3res == 2)
         classLabel = "vibrato";
     else
-        classLabel = "^_^";
+        classLabel = "";
 }
 
 

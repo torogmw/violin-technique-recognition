@@ -62,9 +62,9 @@ public:
     void smooth(vector<int> &c);
     
     ChromaFeat *cf;
-    string classLabel = "^_^";
+    string classLabel = "";
     vector<int> toggleState;
-    float threshold = 0.005;
+    float threshold = 0;
     int pitch = 0;
         
 protected:
@@ -74,8 +74,8 @@ protected:
     const int env_hopSize = 100;
     
     const float bias1 = 0.4105;
-    const float bias2 = -0.9107;
-    const float bias3 = -0.7790;
+    const float bias2 = 0.0893;
+    const float bias3 = -0.6943;
     int numblocks;
     int numdownSamples;
     float* resampleddata;
@@ -95,6 +95,7 @@ protected:
     vector<float> scalefactor3;
     vector<float> inputData;
     vector<float> env;
+    vector<float> zcrbuffer;
     vector<int> chromaFreq;
     vector<float> featToCompare;
     vector<float> featurelist;                                      // 1. std
